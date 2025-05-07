@@ -39,4 +39,8 @@ class AuthController extends Controller
     public function refresh(Request $request){
         return $this->jwtService->refreshAccessToken($request);
     }
+
+    public function logout(Request $request){
+        return $this->authService->logout($request);
+    }
 }

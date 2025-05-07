@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Repositories\Auth\UserRepositoryInterface;
 use App\Services\RefreshToken\RefreshTokenServiceInterface;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -98,7 +99,7 @@ class AuthService implements AuthServiceInterface
 
     public function profile(){
         try{
-            $user = Auth::user();
+            $user = Auth::user()->id;
 
             if(!$user){
                 throw new CustomException("user tidak ditemukan atau belum login",401);
@@ -116,6 +117,30 @@ class AuthService implements AuthServiceInterface
         }
         catch(Exception $e){
             return ResponseHelper::error("terjadi kesalahan pada sistem",[],500);
+        }
+    }
+
+    public function logout(Request $request){
+        try{
+            $user = Auth::user();
+
+            if(!$user){
+                throw new CustomException("user tidak ditemukan",500);
+            }
+
+            Auth::logout();
+
+            $this->jwtService->revokeRefreshToken($request);
+
+            $cookie = cookie()->forget('refresh_token');
+
+            return ResponseHelper::success("berhasil logout",[],200)->withCookie($cookie);
+        }
+        catch(CustomException $e){
+            return ResponseHelper::error($e->getMessage(),[],$e->getStatusCode());
+        }
+        catch(Exception $e){
+            return ResponseHelper::error("terjadi kesalahan pada server",[],500);
         }
     }
 }
