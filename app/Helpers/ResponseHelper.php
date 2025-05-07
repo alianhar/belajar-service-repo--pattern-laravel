@@ -12,11 +12,11 @@ class ResponseHelper {
         ],$code);
     }
 
-    public static function error($message = "error",array $errors = [],$code = 500) {
+    public static function error($message = "error", array $errors = [], $code = 500) {
         return response()->json([
-            'status'=> 'error',
-            'message'=> $message,
-            'errors'=> $errors,
-        ],$code);
+            'status' => 'error',
+            'message' => $message,
+            'errors' => $errors
+        ], $code);
     }
 }
