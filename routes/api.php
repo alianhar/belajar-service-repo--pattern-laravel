@@ -17,4 +17,5 @@ Route::post('/refresh',[AuthController::class,'refresh']);
 
 Route::middleware('jwt.auth')->group(function(){
     Route::get('/profile',[AuthController::class,'profile']);
+    Route::delete('/logout',[AuthController::class,'logout']);
 });

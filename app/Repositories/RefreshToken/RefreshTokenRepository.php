@@ -37,7 +37,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface{
 
         return RefreshToken::where('token',$token)
                                 ->where('revoked',false)
-                                ->where('expires_at','<',Carbon::now())
+                                ->where('expires_at','>',Carbon::now())
                                 ->first();
     }
 

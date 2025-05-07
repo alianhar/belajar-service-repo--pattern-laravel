@@ -70,7 +70,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function profile(){
-        return $this->belongsTo(UserProfile::class);
+        return $this->hasOne(UserProfile::class);
     }
 
     public function order(){
